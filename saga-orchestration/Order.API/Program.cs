@@ -12,9 +12,19 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMassTransit(cfg =>
 {
+    cfg.AddConsumer<Order.API.Consumers.PaymentCompletedEventConsumer>();
+    cfg.AddConsumer<Order.API.Consumers.PaymentFailedEventConsumer>();
     cfg.UsingRabbitMq((context, _cfg) =>
     {
         _cfg.Host(builder.Configuration["RabbitMQ"]);
+        _cfg.ReceiveEndpoint(Shared.RabbitMQSettings.Order_PaymentCompletedEvent, e =>
+        {
+            e.ConfigureConsumer<Order.API.Consumers.PaymentCompletedEventConsumer>(context);
+        });
+        _cfg.ReceiveEndpoint(Shared.RabbitMQSettings.Order_PaymentFailedEvent, e =>
+        {
+            e.ConfigureConsumer<Order.API.Consumers.PaymentFailedEventConsumer>(context);
+        });
     });
 });
 
