@@ -27,7 +27,12 @@ namespace Stock.API.Consumers
 
             if(stockResult.TrueForAll(s => s == true))
             {
-                // update stock
+                foreach(var orderItem in context.Message.OrderItemMessages)
+                {
+                    var stock =(await (await collection.FindAsync(s => s.ProductId == orderItem.ProductId)).FirstOrDefaultAsync());
+                    stock.Quantity -= orderItem.Quantity;
+                    await collection.FindOneAndReplaceAsync(s=>s.ProductId == orderItem.ProductId, stock);
+                }
                 // call payment
             }
             else
