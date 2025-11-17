@@ -14,6 +14,7 @@ builder.Services.AddMassTransit(cfg =>
 {
     cfg.AddConsumer<Order.API.Consumers.PaymentCompletedEventConsumer>();
     cfg.AddConsumer<Order.API.Consumers.PaymentFailedEventConsumer>();
+    cfg.AddConsumer<Order.API.Consumers.StockNotReservedEventConsumer>();
     cfg.UsingRabbitMq((context, _cfg) =>
     {
         _cfg.Host(builder.Configuration["RabbitMQ"]);
@@ -24,6 +25,10 @@ builder.Services.AddMassTransit(cfg =>
         _cfg.ReceiveEndpoint(Shared.RabbitMQSettings.Order_PaymentFailedEvent, e =>
         {
             e.ConfigureConsumer<Order.API.Consumers.PaymentFailedEventConsumer>(context);
+        });
+        _cfg.ReceiveEndpoint(Shared.RabbitMQSettings.Order_StockNotReservedEvent, e =>
+        {
+            e.ConfigureConsumer<Order.API.Consumers.StockNotReservedEventConsumer>(context);
         });
     });
 });
