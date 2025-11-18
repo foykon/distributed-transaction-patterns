@@ -17,7 +17,7 @@ builder.Services.AddMassTransit(cfg =>
     cfg.AddConsumer<Order.API.Consumers.StockNotReservedEventConsumer>();
     cfg.UsingRabbitMq((context, _cfg) =>
     {
-        _cfg.Host(builder.Configuration["RabbitMQ"]);
+        _cfg.Host(new Uri(builder.Configuration["RabbitMQ:Url"]));
         _cfg.ReceiveEndpoint(Shared.RabbitMQSettings.Order_PaymentCompletedEvent, e =>
         {
             e.ConfigureConsumer<Order.API.Consumers.PaymentCompletedEventConsumer>(context);
