@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "MultiBuild",
+    "Projects": [
+      {
+        "Path": "Order.API\\Order.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Stock.API\\Stock.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Payment.API\\Payment.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "SagaStateMachine.Service\\SagaStateMachine.Service.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
