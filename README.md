@@ -85,3 +85,9 @@ A centralized approach for **strong consistency**
 ---
 
 ## 📦 Project Structure
+
+/Order.API
+/Stock.API
+/Payment.API
+/Coordinator.Service
+/Shared
