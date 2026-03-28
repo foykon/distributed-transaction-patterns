@@ -1,93 +1,100 @@
-# 🛒 Microservices E-Commerce System (.NET)
+# 🔁 Distributed Transaction Patterns (.NET)
 
-This project is a backend-focused microservice architecture developed with ASP.NET Core to explore distributed system patterns and transaction management strategies.
+This project explores distributed transaction management strategies in microservice architectures using .NET.
 
-It demonstrates how multiple services communicate, coordinate, and maintain data consistency in a distributed environment.
-
----
-
-## 🚀 Architecture Overview
-
-The system is built using a **microservice architecture**, where each service is responsible for a specific business domain.
-
-### Services
-
-- **Order.API** → Handles order creation and management  
-- **Stock.API** → Manages product inventory and reservations  
-- **Payment.API** → Simulates payment processing  
-- **Coordinator.Service** → Central coordinator for 2PC transactions  
-- **Shared** → Contains message contracts (events & commands)
+It focuses on implementing and comparing **Saga (Orchestration & Choreography)** and **Two-Phase Commit (2PC)** patterns to understand consistency trade-offs in distributed systems.
 
 ---
 
-## ⚙️ Communication
+## 🎯 Purpose
 
-The system supports both **asynchronous** and **synchronous** communication:
+The goal of this project is to gain hands-on experience with:
 
-- **Asynchronous Messaging** → Event-driven communication between services  
-- **Synchronous Calls** → Used in 2PC coordination flow  
+- Distributed transaction management  
+- Event-driven architecture  
+- Strong vs eventual consistency trade-offs  
+- Service-to-service communication patterns  
 
 ---
 
 ## 🧠 Implemented Patterns
 
-### 1. Event-Driven Architecture (Choreography)
+### 1. Saga Pattern
 
+#### 🔹 Choreography-based Saga
 - Services communicate via events  
 - No central coordinator  
-- Ensures **eventual consistency**
+- Each service reacts to events and triggers the next step  
 
-#### Flow Example:
-1. Order created → `OrderCreatedEvent`
-2. Stock reserved → `StockReservedEvent`
-3. Payment completed → `PaymentCompletedEvent`
+✔ Loosely coupled  
+✔ Eventually consistent  
+
+---
+
+#### 🔹 Orchestration-based Saga
+- A central orchestrator manages the transaction flow  
+- Controls which service executes next  
+
+✔ Better control  
+✔ Easier error handling  
 
 ---
 
 ### 2. Two-Phase Commit (2PC)
 
-A centralized approach for **strong consistency**
+A centralized transaction coordination mechanism that ensures **strong consistency**
 
 #### Flow:
-- Phase 1 → Prepare (Vote)
-- Phase 2 → Commit / Abort
+1. **Prepare Phase** → Services vote (Yes / No)  
+2. **Commit Phase** → Commit or rollback  
 
-✔ Guarantees atomic transactions  
-✔ All services succeed or fail together  
+✔ Atomic transactions  
+❌ Less scalable  
 
 ---
 
-### 3. Data Consistency
+## ⚙️ Architecture
 
-- Eventual consistency via messaging  
-- Strong consistency via 2PC  
-- Trade-offs between reliability and performance explored  
+The system is built with multiple services communicating via:
+
+- Asynchronous messaging (event-driven)  
+- Synchronous calls for coordination  
+
+Each service manages its own data and reacts based on the chosen pattern.
+
+---
+
+## 🔄 Consistency Models
+
+| Pattern | Consistency | Coupling | Complexity |
+|--------|------------|----------|------------|
+| Saga (Choreography) | Eventual | Low | Medium |
+| Saga (Orchestration) | Eventual | Medium | Medium |
+| 2PC | Strong | High | High |
 
 ---
 
 ## 🛠️ Technologies
 
-- .NET (ASP.NET Core)
-- Microservices Architecture
-- Messaging / Event-driven design
-- REST APIs
-- Docker (optional)
+- .NET (ASP.NET Core)  
+- Microservices Architecture  
+- REST APIs  
+- Messaging concepts  
+- Docker (optional)  
 
 ---
 
-## 🧪 What I Focused On
+## 🧪 Key Learnings
 
-- Understanding distributed transaction patterns  
-- Comparing **eventual consistency vs strong consistency**  
-- Designing reliable service communication  
-- Exploring real-world backend architecture decisions  
+- Trade-offs between consistency, scalability, and complexity  
+- Designing reliable distributed workflows  
+- Handling failure scenarios and rollback strategies  
+- Understanding real-world system design decisions  
 
 ---
 
-## 📦 Project Structure
+## 📦 Project Structure/Order.API
 
-/Order.API
-/Stock.API
-/Payment.API
-/Coordinator.Service
+/Services
+/Orchestrator
 /Shared
